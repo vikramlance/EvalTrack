@@ -1,0 +1,97 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(uuid())
+  email         String    @unique
+  password      String
+  name          String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  metrics       Metric[]
+  challenges    Challenge[]
+  jobApplications JobApplication[]
+  prepActivities PrepActivity[]
+}
+
+model Metric {
+  id            String    @id @default(uuid())
+  name          String
+  description   String?
+  target        Int?
+  current       Int       @default(0)
+  unit          String?
+  startDate     DateTime  @default(now())
+  endDate       DateTime?
+  userId        String
+  user          User      @relation(fields: [userId], references: [id])
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  metricLogs    MetricLog[]
+}
+
+model MetricLog {
+  id            String    @id @default(uuid())
+  value         Int
+  date          DateTime  @default(now())
+  note          String?
+  metricId      String
+  metric        Metric    @relation(fields: [metricId], references: [id])
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Challenge {
+  id            String    @id @default(uuid())
+  name          String
+  description   String?
+  startDate     DateTime  @default(now())
+  endDate       DateTime
+  target        Int
+  current       Int       @default(0)
+  unit          String?
+  isCompleted   Boolean   @default(false)
+  userId        String
+  user          User      @relation(fields: [userId], references: [id])
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model JobApplication {
+  id            String    @id @default(uuid())
+  jobTitle      String
+  company       String
+  applicationUrl String?
+  resumeVersion String?
+  contactName   String?
+  contactEmail  String?
+  contactLinkedIn String?
+  notes         String?
+  status        String    @default("Applied") // Applied, Interview, Offer, Rejected
+  appliedDate   DateTime  @default(now())
+  userId        String
+  user          User      @relation(fields: [userId], references: [id])
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model PrepActivity {
+  id            String    @id @default(uuid())
+  type          String    // DSA, SystemDesign, MockInterview, Leetcode
+  date          DateTime  @default(now())
+  selfRating    Int?      // 1-5 stars
+  notes         String?
+  userId        String
+  user          User      @relation(fields: [userId], references: [id])
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}

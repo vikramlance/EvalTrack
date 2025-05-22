@@ -1,0 +1,36 @@
+{
+  "name": "evaltrack",
+  "version": "1.0.0",
+  "description": "A motivational scorecard app for tracking progress and building habits",
+  "main": "app/server/index.js",
+  "scripts": {
+    "start": "node app/server/index.js",
+    "dev": "nodemon app/server/index.js",
+    "client": "cd app/client && npm start",
+    "dev:all": "concurrently \"npm run dev\" \"npm run client\"",
+    "install:all": "npm install && cd app/client && npm install",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "motivation",
+    "tracking",
+    "habits",
+    "dashboard",
+    "metrics"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@prisma/client": "^4.14.0",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.0"
+  },
+  "devDependencies": {
+    "concurrently": "^8.0.1",
+    "nodemon": "^3.1.10",
+    "prisma": "^4.14.0"
+  }
+}
